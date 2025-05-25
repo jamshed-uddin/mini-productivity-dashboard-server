@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
 
-// connectdb();
+connectdb();
 
 app.get("/", (req, res) => {
   res.status(200).send({ message: "Server is running" });

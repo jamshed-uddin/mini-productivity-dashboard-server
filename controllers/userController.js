@@ -1,5 +1,10 @@
 const Users = require("../models/userModel");
 const customError = require("../utils/customError");
+const generateToken = require("../utils/generateToken");
+const {
+  validateUserInfo,
+  validateUserCredentials,
+} = require("../utils/validate");
 
 // @desc login user
 // POST /api/users/login
@@ -7,20 +12,20 @@ const customError = require("../utils/customError");
 
 const loginUser = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    console.log(req.body);
 
-    if (!email) {
-      throw customError(400, "Email is required");
-    } else if (!password) {
-      throw customError(400, "Password is required");
+    const { error, value: userCredentials } = validateUserCredentials(req.body);
+    if (error) {
+      throw customError(401, error.message);
     }
 
-    const user = await Users.findOne({ email });
+    const user = await Users.findOne({ email: userCredentials.email });
 
-    if (user && (await user.matchPassword(password))) {
+    if (user && (await user.matchPassword(userCredentials.password))) {
       const userWithoutPassword = user?.toObject();
       delete userWithoutPassword.password;
 
+      generateToken({ res, userId: userWithoutPassword._id });
       res.status(200).send({
         message: "Login succesful",
         data: userWithoutPassword,
@@ -38,34 +43,47 @@ const loginUser = async (req, res, next) => {
 // @access Public
 const registerUser = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { error, value: userInfo } = validateUserInfo(req.body);
 
-    if (!email) {
-      throw customError(400, "Email is required");
-    } else if (!password) {
-      throw customError(400, "Password is required");
-    } else if (password.length < 6) {
-      throw customError(400, "Password length must be 6 or higher");
+    if (error) {
+      throw customError(400, error.message);
     }
 
     const existingUser = await Users.findOne({
-      email,
+      email: userInfo.email,
     });
 
-    if (existingUser?.email === email) {
+    if (existingUser) {
       throw customError(400, "An account with this email already exists");
     }
 
-    const newUser = await Users.create({ email, password });
+    const newUser = await Users.create(userInfo);
+
+    console.log(newUser);
     const userWithoutPassword = newUser?.toObject();
     delete userWithoutPassword.password;
 
-    const response = userWithoutPassword;
+    const response = { message: "User registered", data: userWithoutPassword };
+    generateToken({ res, userId: userWithoutPassword._id });
 
-    res.status(200).send({ message: "User registered", data: response });
+    res.status(200).send(response);
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { loginUser, registerUser };
+//@desc logout user
+// POST /api/users/logout
+// @access
+const logoutUser = async (req, res, next) => {
+  try {
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { loginUser, registerUser, logoutUser };
