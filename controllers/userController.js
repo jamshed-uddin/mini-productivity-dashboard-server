@@ -12,6 +12,7 @@ const {
 
 const loginUser = async (req, res, next) => {
   try {
+    console.log("endpoint hitting");
     console.log(req.body);
 
     const { error, value: userCredentials } = validateUserCredentials(req.body);

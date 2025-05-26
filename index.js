@@ -8,8 +8,12 @@ const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(express.json());
-app.use(express.urlencoded());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  })
+);
 
 connectdb();
 
