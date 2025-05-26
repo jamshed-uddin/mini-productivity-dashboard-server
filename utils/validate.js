@@ -75,10 +75,13 @@ const validateTaskInfo = (taskInfo) => {
       "string.empty": "Goal creator id is required",
     }),
   });
+
+  return schema.validate(taskInfo);
 };
 
 module.exports = {
   validateUserInfo,
   validateUserCredentials,
   validateGoalInfo,
+  validateTaskInfo,
 };
