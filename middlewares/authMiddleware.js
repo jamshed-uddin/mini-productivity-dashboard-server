@@ -15,17 +15,16 @@ const verifyAuth = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.SECRET);
 
     const user = await Users.findById(decoded._id).select("-password");
-    console.log(user);
 
     if (!user) {
       throw customError(401, "Unauthorized action");
     }
 
-    res.user = user;
+    req.user = user;
     next();
-  } catch {
-    throw customError(401, "Unauthorized action");
+  } catch (error) {
+    next(error);
   }
 };
 
-module.exports = verifyAuth;
+module.exports = { verifyAuth };

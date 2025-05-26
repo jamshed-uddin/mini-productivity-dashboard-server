@@ -47,10 +47,6 @@ const validateGoalInfo = (goalInfo) => {
       "any.required": "Status is required",
       "string.empty": "Status is required",
     }),
-    user: joi.string().required().messages({
-      "any.required": "Task creator id is required",
-      "string.empty": "Task creator id is required",
-    }),
   });
   return schema.validate(goalInfo);
 };
@@ -62,6 +58,8 @@ const validateTaskInfo = (taskInfo) => {
       "string.empty": "Title is required",
     }),
 
+    description: joi.string().allow("").optional(),
+
     status: joi.string().required().messages({
       "any.required": "Status is required",
       "string.empty": "Status is required",
@@ -70,10 +68,8 @@ const validateTaskInfo = (taskInfo) => {
       "any.required": "Priority is required",
       "string.empty": "Priority is required",
     }),
-    user: joi.string().required().messages({
-      "any.required": "Goal creator id is required",
-      "string.empty": "Goal creator id is required",
-    }),
+    goal: joi.string().allow("").optional(),
+    date: joi.string().allow("").optional(),
   });
 
   return schema.validate(taskInfo);
