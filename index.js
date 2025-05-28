@@ -1,5 +1,6 @@
 const express = require("express");
-require("dotenv").config();
+const dotenv = require("dotenv");
+
 const connectdb = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const taskRoutes = require("./routes/taskRoutes");
@@ -7,7 +8,7 @@ const goalRoutes = require("./routes/goalRoutes");
 const cors = require("cors");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 const cookieParser = require("cookie-parser");
-
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(cookieParser());
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://stride-eta.vercel.app"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
 );
