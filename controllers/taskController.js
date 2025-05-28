@@ -7,7 +7,6 @@ const customError = require("../utils/customError");
 // @access private
 const createTask = async (req, res, next) => {
   try {
-    console.log(req.body);
     const { error, value: taskInfo } = validateTaskInfo(req.body);
 
     if (error) {

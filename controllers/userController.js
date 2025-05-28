@@ -12,9 +12,6 @@ const {
 
 const loginUser = async (req, res, next) => {
   try {
-    console.log("endpoint hitting");
-    console.log(req.body);
-
     const { error, value: userCredentials } = validateUserCredentials(req.body);
     if (error) {
       throw customError(401, error.message);
@@ -60,7 +57,6 @@ const registerUser = async (req, res, next) => {
 
     const newUser = await Users.create(userInfo);
 
-    console.log(newUser);
     const userWithoutPassword = newUser?.toObject();
     delete userWithoutPassword.password;
 

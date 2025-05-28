@@ -6,8 +6,6 @@ const notFound = (req, res, next) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-  console.log("err", err);
-
   let statusCode =
     err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
 
@@ -17,7 +15,6 @@ const errorHandler = (err, req, res, next) => {
     statusCode = 404;
     message = "Resource not found";
   }
-  console.log("error mess", message);
 
   res.status(statusCode).send({
     message,
