@@ -43,10 +43,9 @@ const validateGoalInfo = (goalInfo) => {
       "any.required": "Title is required",
       "string.empty": "Title is required",
     }),
-    status: joi.string().required().messages({
-      "any.required": "Status is required",
-      "string.empty": "Status is required",
-    }),
+    description: joi.string().allow("").optional(),
+    status: joi.string().allow("").optional(),
+    user: joi.string().allow("").optional(),
   });
   return schema.validate(goalInfo);
 };
@@ -60,10 +59,7 @@ const validateTaskInfo = (taskInfo) => {
 
     description: joi.string().allow("").optional(),
 
-    status: joi.string().required().messages({
-      "any.required": "Status is required",
-      "string.empty": "Status is required",
-    }),
+    status: joi.string().allow("").optional(),
     priority: joi.string().required().messages({
       "any.required": "Priority is required",
       "string.empty": "Priority is required",

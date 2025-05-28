@@ -82,6 +82,8 @@ const logoutUser = async (req, res, next) => {
       httpOnly: true,
       expires: new Date(0),
     });
+
+    res.status(200).send({ message: "User logged out" });
   } catch (error) {
     next(error);
   }

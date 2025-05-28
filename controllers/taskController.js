@@ -7,6 +7,7 @@ const customError = require("../utils/customError");
 // @access private
 const createTask = async (req, res, next) => {
   try {
+    console.log(req.body);
     const { error, value: taskInfo } = validateTaskInfo(req.body);
 
     if (error) {
@@ -29,7 +30,9 @@ const createTask = async (req, res, next) => {
 // @access private
 const getTasks = async (req, res, next) => {
   try {
-    const tasks = await Tasks.find({ user: req.user._id }).populate("goal");
+    const tasks = await Tasks.find({ user: req.user._id })
+      .sort({ date: 1 })
+      .populate("goal");
 
     const response = {
       message: "Tasks retrieved",

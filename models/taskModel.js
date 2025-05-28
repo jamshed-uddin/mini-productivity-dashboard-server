@@ -24,6 +24,7 @@ const taskSchema = new mongoose.Schema(
     goal: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Goal",
+      set: (v) => v || null,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
