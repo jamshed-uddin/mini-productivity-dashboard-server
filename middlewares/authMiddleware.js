@@ -8,7 +8,14 @@ const verifyAuth = async (req, res, next) => {
   token = req.cookies.token;
 
   if (!token) {
-    throw customError(401, "Authorization failed - no valid token");
+    throw customError(
+      401,
+      ` ${
+        process.env.NODE_ENV === "development"
+          ? "Authorization failed - no valid token"
+          : "Access denied"
+      }`
+    );
   }
 
   try {
@@ -17,7 +24,14 @@ const verifyAuth = async (req, res, next) => {
     const user = await Users.findById(decoded._id).select("-password");
 
     if (!user) {
-      throw customError(401, "Unauthorized action");
+      throw customError(
+        401,
+        ` ${
+          process.env.NODE_ENV === "development"
+            ? "Authorization failed - no valid token"
+            : "Access denied"
+        }`
+      );
     }
 
     req.user = user;
