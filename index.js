@@ -18,6 +18,7 @@ app.use(
       "http://localhost:3000",
       "https://mini-productivity-dashboard-pi.vercel.app",
     ],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
