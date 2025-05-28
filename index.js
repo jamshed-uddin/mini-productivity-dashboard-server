@@ -1,13 +1,12 @@
 const express = require("express");
 const dotenv = require("dotenv");
-
-const connectdb = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const goalRoutes = require("./routes/goalRoutes");
 const cors = require("cors");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 const cookieParser = require("cookie-parser");
+const { default: mongoose } = require("mongoose");
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,7 +20,10 @@ app.use(
   })
 );
 
-connectdb();
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected successfully"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 app.get("/", (req, res) => {
   res.status(200).send({ message: "Server is running" });
