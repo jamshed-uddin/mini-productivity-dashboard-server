@@ -20,13 +20,13 @@ const loginUser = async (req, res, next) => {
     const user = await Users.findOne({ email: userCredentials.email });
 
     if (user && (await user.matchPassword(userCredentials.password))) {
-      const userWithoutPassword = user?.toObject();
-      delete userWithoutPassword.password;
+      const responseObject = user?.toObject();
+      delete responseObject.password;
+      responseObject.token = generateToken(responseObject._id);
 
-      generateToken({ res, userId: userWithoutPassword._id });
       res.status(200).send({
         message: "Login succesful",
-        data: userWithoutPassword,
+        data: responseObject,
       });
     } else {
       throw customError(400, "Invalid credentials");
@@ -57,11 +57,11 @@ const registerUser = async (req, res, next) => {
 
     const newUser = await Users.create(userInfo);
 
-    const userWithoutPassword = newUser?.toObject();
-    delete userWithoutPassword.password;
+    const responseObject = newUser?.toObject();
+    delete responseObject.password;
+    responseObject.token = generateToken(responseObject._id);
 
-    const response = { message: "User registered", data: userWithoutPassword };
-    generateToken({ res, userId: userWithoutPassword._id });
+    const response = { message: "User registered", data: responseObject };
 
     res.status(200).send(response);
   } catch (error) {
@@ -69,20 +69,4 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-//@desc logout user
-// POST /api/users/logout
-// @access
-const logoutUser = async (req, res, next) => {
-  try {
-    res.cookie("token", "", {
-      httpOnly: true,
-      expires: new Date(0),
-    });
-
-    res.status(200).send({ message: "User logged out" });
-  } catch (error) {
-    next(error);
-  }
-};
-
-module.exports = { loginUser, registerUser, logoutUser };
+module.exports = { loginUser, registerUser };
