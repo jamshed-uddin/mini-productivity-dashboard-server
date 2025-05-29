@@ -10,6 +10,9 @@ const cookieParser = require("cookie-parser");
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+connectdb();
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(
@@ -19,8 +22,6 @@ app.use(
     credentials: true,
   })
 );
-
-connectdb();
 
 app.get("/", (req, res) => {
   res.status(200).send({ message: "Server is running" });
