@@ -36,7 +36,7 @@ const getGoals = async (req, res, next) => {
     const goals = await Goals.find({ user: req.user._id });
 
     res.status(200).send({
-      message: "Goals retrieved successfully",
+      message: "Goals retrieved",
       data: goals,
     });
   } catch (error) {
@@ -75,9 +75,6 @@ const updateGoal = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      throw customError(400, "Task id is required");
-    }
     const goalUpdates = req.body;
 
     const updatedGoal = await Goals.findOneAndUpdate(
@@ -105,10 +102,6 @@ const updateGoal = async (req, res, next) => {
 const deleteGoal = async (req, res, next) => {
   try {
     const { id } = req.params;
-
-    if (!id) {
-      throw customError(400, "Task id is required");
-    }
 
     const deletedGoal = await Goals.findOneAndDelete({
       _id: id,
