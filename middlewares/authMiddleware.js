@@ -5,7 +5,7 @@ const Users = require("../models/userModel");
 const verifyAuth = async (req, res, next) => {
   let token;
 
-  token = req.cookies.token;
+  token = req.header("Authorization")?.split(" ")[1];
 
   if (!token) {
     throw customError(
