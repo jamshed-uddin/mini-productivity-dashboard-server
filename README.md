@@ -1,8 +1,8 @@
 # Stride - server
 
-## Client repo
+## Client repository
 
-[link](link)
+[Client repository](https://github.com/jamshed-uddin/mini-productivity-dashboard-client)
 
 ## Run the server locally
 
