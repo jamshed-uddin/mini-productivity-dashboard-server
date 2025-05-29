@@ -44,7 +44,7 @@ node index.js
 
 ### Endpoint documentation(postman)
 
-[https://documenter.getpostman.com/view/29126982/2sB2ixitZM](https://documenter.getpostman.com/view/29126982/2sB2ixitZM)
+[https://documenter.getpostman.com/view/29126982/2sB2qfAyrt](https://documenter.getpostman.com/view/29126982/2sB2qfAyrt)
 
 ## Auth
 
